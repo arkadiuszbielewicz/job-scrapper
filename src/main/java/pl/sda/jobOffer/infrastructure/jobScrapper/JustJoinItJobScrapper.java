@@ -1,7 +1,6 @@
-package pl.sda.jobScrapper;
+package pl.sda.jobOffer.infrastructure.jobScrapper;
 
-import pl.sda.jobOffer.JobOffer;
-import pl.sda.jobOffer.JobOfferEntity;
+import pl.sda.jobOffer.domain.*;
 
 import java.util.List;
 

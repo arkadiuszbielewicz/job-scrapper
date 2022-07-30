@@ -1,9 +1,9 @@
-package pl.sda.jobOffer;
+package pl.sda.jobOffer.infrastructure;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import pl.sda.jobOffer.domain.*;
 
 import javax.persistence.*;
 
@@ -17,12 +17,11 @@ public class JobOfferEntity {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
     private String company;
     private String location;
     private Double minSalary;
-    private Double maxSalary;    
+    private Double maxSalary;
     private String link;
 
     public JobOfferEntity(String title, String company, String location, Double minSalary, Double maxSalary, String link) {
@@ -34,22 +33,25 @@ public class JobOfferEntity {
         this.link = link;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public static JobOfferEntity from(JobOffer jobOffer){
-        return new JobOfferEntity(jobOffer.getId(),
+        return new JobOfferEntity(
                 jobOffer.getTitle(),
                 jobOffer.getCompany(),
                 jobOffer.getLocation(),
                 jobOffer.getMinSalary(),
                 jobOffer.getMaxSalary(),
                 jobOffer.getLink());
+    }
+
+    public JobOffer toJobOffer() {
+        return new JobOffer(
+                title,
+                company,
+                location,
+                minSalary,
+                maxSalary,
+                link
+        );
     }
 
 

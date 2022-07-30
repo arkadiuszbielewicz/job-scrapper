@@ -1,4 +1,4 @@
-package pl.sda.jobOffer;
+package pl.sda.jobOffer.api;
 
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.sda.jobOffer.domain.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,6 @@ import java.util.stream.IntStream;
 
 @Controller
 public class ScrapperController {
-
     private final JobOfferService jobOfferService;
 
     public ScrapperController(JobOfferService jobOfferService) {
@@ -43,8 +43,7 @@ public class ScrapperController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
 
-        List<JobOffer> offersList = jobOfferService.filterByParams(filterParamsDto);;
-        Page<JobOffer> offers = jobOfferService.findPaginated(PageRequest.of(currentPage - 1, pageSize), offersList);
+        Page<JobOffer> offers = jobOfferService.filterByParams(filterParamsDto, PageRequest.of(currentPage - 1, pageSize));
 
         modelMap.addAttribute("offers", offers);
 
@@ -59,24 +58,9 @@ public class ScrapperController {
         return "main-page-paginated";
     }
 
-
-
-    @GetMapping("/filtered")
-    public String filterJobOffers(@ModelAttribute("filterParamsDto") FilterParamsDto filterParamsDto, ModelMap modelMap) {
-        List<JobOffer> offers = jobOfferService.filterByParams(filterParamsDto);
-        modelMap.addAttribute("offers", offers);
-        return "main-page-filtered";
-    }
-
-
     @ModelAttribute("filterParamsDto")
     public void filterParamsDto(Model model) {
         model.addAttribute(new FilterParamsDto());
     }
 
 }
-
-    // TODO
-
-    // dodać inny serwis? justJoinit?
-
